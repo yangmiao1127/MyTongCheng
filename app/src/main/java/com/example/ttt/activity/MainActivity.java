@@ -34,11 +34,11 @@ import com.example.ttt.util.Utility;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.litepal.tablemanager.Connector;
-
+import android.view.View.OnClickListener;
 /**
  * Created by 1 on 2015/9/30.
  */
-public class MainActivity extends Activity {
+public class MainActivity extends Activity{
 
     private ImageView imageView;
     private TextView title;
@@ -50,6 +50,12 @@ public class MainActivity extends Activity {
     private String wish1;
     private String content1;
     private Button map;
+    private String userId;
+    private String userName;
+    private String userImage;
+
+    private TextView user;
+    private Button look;
 
     private String latitude;
     private String longitude;
@@ -67,6 +73,8 @@ public class MainActivity extends Activity {
         wish = (TextView) findViewById(R.id.wish);
         content = (TextView) findViewById(R.id.content);
         map= (Button) findViewById(R.id.map);
+        user= (TextView) findViewById(R.id.user);
+        look= (Button) findViewById(R.id.look);
 
         Intent intent = getIntent();
         String eventId = intent.getStringExtra("eventId");
@@ -157,8 +165,11 @@ public class MainActivity extends Activity {
        content1=preferences.getString("content", "");
        wish1=preferences.getInt("wisher_count", 0) + "人感兴趣";
 
+       userName=preferences.getString("userName","");
+       userId=preferences.getString("userId","");
+       userImage=preferences.getString("userImage","");
 
-
+       user.setText("创建者："+userName);
        title.setText(title1);
        participant.setText(participant1);
        content.setText(content1);
@@ -196,7 +207,19 @@ public class MainActivity extends Activity {
                startActivity(intent);
            }
        });
+       look.setOnClickListener(new OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               Intent intent=new Intent(MainActivity.this,UserInfoActivity.class);
+               intent.putExtra("userName",userName);
+               intent.putExtra("userId",userId);
+               intent.putExtra("userImage",userImage);
+               startActivity(intent);
+           }
+       });
+
     }
+
 
 
 }

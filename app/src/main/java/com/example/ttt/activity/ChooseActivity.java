@@ -63,6 +63,8 @@ public class ChooseActivity extends Activity{
                             intent.putExtra("id", city.getCityId());
                             intent.putExtra("name", city.getCityName());
                             startActivity(intent);
+                            Intent intent1=new Intent(ChooseActivity.this,AutoService.class);
+                            startService(intent1);
                         }
                     });
 
