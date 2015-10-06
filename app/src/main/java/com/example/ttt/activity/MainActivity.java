@@ -2,6 +2,7 @@ package com.example.ttt.activity;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -53,8 +54,8 @@ public class MainActivity extends Activity{
     private String userId;
     private String userName;
     private String userImage;
+    private ProgressDialog progressDialog;
 
-    private TextView user;
     private Button look;
 
     private String latitude;
@@ -73,14 +74,17 @@ public class MainActivity extends Activity{
         wish = (TextView) findViewById(R.id.wish);
         content = (TextView) findViewById(R.id.content);
         map= (Button) findViewById(R.id.map);
-        user= (TextView) findViewById(R.id.user);
         look= (Button) findViewById(R.id.look);
+        if(progressDialog==null){
+
+        progressDialog=new ProgressDialog(this);
+        progressDialog.setMessage("加载中");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
+        }
 
         Intent intent = getIntent();
         String eventId = intent.getStringExtra("eventId");
-
-        Log.d("III",eventId);
-
         String website = "https://api.douban.com/v2/event/" + eventId;
 
         HttpUtil.sendHttpRequest(website, new HttpCallbackListener() {
@@ -91,6 +95,7 @@ public class MainActivity extends Activity{
                     @Override
                     public void run() {
                         showInfo();
+                        progressDialog.dismiss();
                     }
                 });
             }
@@ -169,7 +174,7 @@ public class MainActivity extends Activity{
        userId=preferences.getString("userId","");
        userImage=preferences.getString("userImage","");
 
-       user.setText("创建者："+userName);
+       look.setText(userName);
        title.setText(title1);
        participant.setText(participant1);
        content.setText(content1);

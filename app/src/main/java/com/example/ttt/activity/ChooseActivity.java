@@ -2,26 +2,19 @@ package com.example.ttt.activity;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.hardware.camera2.CameraConstrainedHighSpeedCaptureSession;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 
-import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ttt.R;
 import com.example.ttt.adapter.CityAdapter;
 import com.example.ttt.model.City;
-import com.example.ttt.service.AutoService;
 import com.example.ttt.util.HttpCallbackListener;
 import com.example.ttt.util.HttpUtil;
 
@@ -49,7 +42,6 @@ public class ChooseActivity extends Activity{
             switch (msg.what){
                 case CCC:
                     mList= (List<City>) msg.obj;
-                    /*adapter.notifyDataSetChanged();*/
                     adapter=new CityAdapter(ChooseActivity.this,R.layout.citystyle,mList);
                     cityListView.setAdapter(adapter);
                     cityListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -63,8 +55,6 @@ public class ChooseActivity extends Activity{
                             intent.putExtra("id", city.getCityId());
                             intent.putExtra("name", city.getCityName());
                             startActivity(intent);
-                            Intent intent1=new Intent(ChooseActivity.this,AutoService.class);
-                            startService(intent1);
                         }
                     });
 
@@ -84,9 +74,13 @@ public class ChooseActivity extends Activity{
 
         String webSite="https://api.douban.com/v2/loc/list";
 
-        progressDialog=new ProgressDialog(this);
-        progressDialog.setMessage("加载中");
-        progressDialog.setCanceledOnTouchOutside(false);
+        if(progressDialog==null){
+
+            progressDialog=new ProgressDialog(this);
+            progressDialog.setMessage("加载中");
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.show();
+        }
 
         HttpUtil.sendHttpRequest(webSite, new HttpCallbackListener() {
             @Override
@@ -113,9 +107,6 @@ public class ChooseActivity extends Activity{
                 City city=new City();
                 city.setCityName(name);
                 city.setCityId(id);
-
-                Log.d("MMMM2", id);
-
                 cityList.add(city);
 
             }

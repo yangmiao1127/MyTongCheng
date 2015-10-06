@@ -58,4 +58,31 @@ public class Utility {
         editor.putString("userName",userName);
         editor.commit();
     }
+    public static void parseJson(Context context, String response){
+        try {
+            JSONObject jsonObject=new JSONObject(response);
+            JSONObject jsonObject1 =jsonObject.getJSONObject("result");
+            JSONObject jsonObject2=jsonObject1.getJSONObject("today");
+            String date=jsonObject2.getString("date_y");
+            String temperature=jsonObject2.getString("temperature");
+            String weatherif=jsonObject2.getString("weather");
+            JSONObject jsonObject3=jsonObject2.getJSONObject("weather_id");
+            String weather=jsonObject3.getString("fa");
+            Log.d("99993",date);
+            Log.d("99994",temperature);
+            Log.d("99995",weather);
+            saveIf(context, date, temperature,weatherif, weather);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+    public static void saveIf(Context context,String data,String temp,String weatherif,String weather){
+        SharedPreferences.Editor editor=context.getSharedPreferences("weatherInfo",Context.MODE_PRIVATE).edit();
+        editor.putString("data",data);
+        editor.putString("temp",temp);
+        editor.putString("weather",weather);
+        editor.putString("weatherif",weatherif);
+        editor.commit();
+    }
 }

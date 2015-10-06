@@ -37,13 +37,13 @@ public class SaveActivity extends Activity{
         adapter=new EventAdapter(SaveActivity.this,R.layout.event_activity,eventList);
         saveList.setAdapter(adapter);
 
-        saveList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        /*saveList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 DataSupport.delete(Event.class,position);
                 Toast.makeText(SaveActivity.this,"已删除",Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
 
 
     }
